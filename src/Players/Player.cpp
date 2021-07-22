@@ -247,7 +247,8 @@ void Player::resolvePortalCollision(const BoxBound& bound)
     }
     // Snap to the end of the portal, And change gameMode
     this->setTopLeftPosition(bound.getRight(), this->getTopLeftPosition().y);
-    this->m_ref_PlayingState.switchGameMode(); // Portal sucks the Player in irrespective of how it touches it.
+   // this->m_ref_PlayingState.switchGameMode(); // Portal sucks the Player in irrespective of how it touches it.
+    this->m_ref_PlayingState.setNextFrameAction(NEXTFRAMEACTION::SWITCH);
 }
 void Player::die()
 {
@@ -257,6 +258,8 @@ void Player::die()
     this->setTopLeftPosition(CONSTANTS::SPAWNPOINT_X, CONSTANTS::SPAWNPOINT_Y);
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
     this->m_ref_PlayingState.displayGameEnd();
+    if(this->m_ref_PlayingState.getGameMode()!=GAMEMODE::NORMAL)
+    this->m_ref_PlayingState.setNextFrameAction(NEXTFRAMEACTION::NORMAL);
     this->m_ref_PlayingState.getCamera().reset();
 }
 

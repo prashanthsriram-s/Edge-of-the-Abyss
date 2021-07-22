@@ -9,10 +9,11 @@
 PlayingState::PlayingState(Game& pGame):
 	StateBase(pGame),
 	m_player(std::make_unique<NormalPlayer>(*this)),
-	m_level("checkmap", *this),
+	m_level("portaltest", *this),
 	m_camera(*this),
 	m_scoreKeeper(*this),
-	m_gameMode(GAMEMODE::NORMAL)
+	m_gameMode(GAMEMODE::NORMAL),
+	nextFrameAction(NEXTFRAMEACTION::NOTHING)
 {
 }
 
@@ -25,6 +26,14 @@ void PlayingState::displayGameEnd()
 	m_scoreKeeper.updateHighScore();
 }
 
+void PlayingState::setNextFrameAction(NEXTFRAMEACTION flag)
+{
+	nextFrameAction = flag;
+}
+const NEXTFRAMEACTION PlayingState::getNextFrameAction() const
+{
+	return nextFrameAction;
+}
 /**
  * @brief Changes the current game mode to required mode. Called when portal is used.
  * 		  Preserves the position, orientation and velocity of the player through portals
@@ -51,6 +60,9 @@ void PlayingState::changeGameMode(GAMEMODE gameMode)
 	//m_player->setRotation(oldPlayer->getRotation());
 }
 
+const GAMEMODE PlayingState::getGameMode() const{
+	return m_gameMode;
+}
 /**
  * @brief Switches between NORMAL and PLANE gameModes. Uses PlayingState::changeGameMode()
  * 
@@ -78,6 +90,16 @@ void PlayingState::handleEvent(sf::Event& ev){
  * @param dt Time for which the last frame ran
  */
 void PlayingState::update(sf::Time dt){
+	if(nextFrameAction == NEXTFRAMEACTION::SWITCH)
+	{
+		this->switchGameMode();
+		nextFrameAction = NEXTFRAMEACTION::NOTHING;
+	}
+	else if(nextFrameAction == NEXTFRAMEACTION::NORMAL)
+	{
+		this->changeGameMode(GAMEMODE::NORMAL);
+		nextFrameAction = NEXTFRAMEACTION::NOTHING;
+	}
 	m_player->update(dt);
 	m_camera.update(dt);
 	m_level.update(dt);
@@ -93,7 +115,7 @@ void PlayingState::render(sf::RenderTarget& renderer){
 	m_camera.render(renderer);
 	m_level.render(renderer);
 	m_scoreKeeper.render(renderer);
-  	m_player->render(renderer);
+  m_player->render(renderer);
 }
 
 /**
