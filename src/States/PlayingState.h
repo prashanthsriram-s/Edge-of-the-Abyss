@@ -42,8 +42,12 @@ public:
 	const Player& getPlayer() const ;
 	Camera& getCamera();
 	const Level& getCurrentLevel() const ;
+
 	const NEXTFRAMEACTION getNextFrameAction() const;
 	const GAMEMODE getGameMode() const;
+
+	ScoreKeeper& getScoreKeeper();
+
 	
 };
 

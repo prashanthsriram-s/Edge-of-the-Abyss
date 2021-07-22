@@ -30,6 +30,11 @@ protected:
 	sf::Vector2f velocity;
 	bool keyHeld = false;
 
+	//Save last State
+	sf::Vector2f lastVelocity;
+	float lastX, lastY;
+	float lastRotation;
+	float lastScore;
 	//Core
 	virtual void initVariables() = 0;
 	virtual void initPhysics() = 0;
@@ -40,6 +45,9 @@ protected:
 
 	virtual void resolveTileCollision(const BoxBound& bound);
 	void snapToSide(const BoxBound& tile,const SIDE collisionside);
+
+	void saveCurrentState();
+	void restoreLastState();
 
 	virtual void resolveSpikeCollision(const Bound& bound);
 	virtual void resolvePortalCollision(const BoxBound& bound);

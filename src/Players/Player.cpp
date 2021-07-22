@@ -230,6 +230,7 @@ void Player::snapToSide(const BoxBound& tile, SIDE collisionside){
     else if(collisionside == SIDE::TOP){
         this->setTopLeftPosition(getTopLeftPosition().x, tile.getBottom());
     }
+    this->saveCurrentState();
 }
 
 void Player::resolveSpikeCollision(const Bound& bound)
@@ -262,6 +263,23 @@ void Player::die()
     this->m_ref_PlayingState.getCamera().reset();
 }
 
+void Player::saveCurrentState()
+{
+    this->lastX = this->getTopLeftPosition().x;
+    this->lastY = this->getTopLeftPosition().y;
+    this->lastRotation = this->getRotation();
+    this->lastVelocity = this->getVelocity();
+    this->lastScore =  this->m_ref_PlayingState.getScoreKeeper().getCurrentScore();
+    std::cout<<lastX<<"::"<<lastY<<std::endl;
+}
+void Player::restoreLastState()
+{
+    this->setTopLeftPosition(this->lastX, this->lastY);
+    this->setRotation(this->lastRotation);
+    this->setVelocity(this->lastVelocity.x, this->lastVelocity.y);
+    this->m_ref_PlayingState.getScoreKeeper().setCurrentScore(this->lastScore);
+}
+
 /**
  * @brief Sets keyHeld to true if space, up arrow, or left mouse button is held
  * 
@@ -281,7 +299,10 @@ void Player::handleEvent(sf::Event ev)
                     break;
                 case sf::Keyboard::Up:
                     upArrowHeld = true;
-                    break;        
+                    break;
+                case sf::Keyboard::BackSpace:
+                    this->restoreLastState();
+                    break; 
                 default:
                     break;
             }
