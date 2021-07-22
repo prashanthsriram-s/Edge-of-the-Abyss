@@ -21,12 +21,17 @@ void PlanePlayer::initVariables()
     this->playerBounds.setHeight(CONSTANTS::PLANE_HEIGHT);
     this->sprite.setOrigin(CONSTANTS::PLANE_WIDTH/2, CONSTANTS::TILE_HEIGHT - 19.f/2.f);
     this->setCenter(CONSTANTS::PLANE_SPAWN_POINT_X, CONSTANTS::PLANE_SPAWN_POINT_Y);
+    this->lastX = this->getTopLeftPosition().x;
+    this->lastY = this->getTopLeftPosition().y;
+    this->lastScore = 0.f;
 }
 
 void PlanePlayer::initPhysics()
 {
     this->velocity.x = CONSTANTS::PLANE_SPEED_X;
     this->velocity.y = CONSTANTS::PLANE_SPEED_Y;
+    this->lastVelocity = this->velocity;
+    this->lastRotation = this->getRotation();
 }
 
 //Functions

@@ -38,6 +38,7 @@ public:
 	const Player& getPlayer() const ;
 	Camera& getCamera();
 	const Level& getCurrentLevel() const ;
+	ScoreKeeper& getScoreKeeper();
 	
 };
 
