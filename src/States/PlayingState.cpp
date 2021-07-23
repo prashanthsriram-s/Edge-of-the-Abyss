@@ -84,7 +84,9 @@ void PlayingState::switchGameMode()
  */
 void PlayingState::handleEvent(sf::Event& ev){
 	//Event handeling to change state can be done here.
-	m_player->handleEvent(ev);
+	if(ev.type == sf::Event::KeyPressed &&  ev.key.code == sf::Keyboard::G)
+	    this->switchGameMode();
+    else m_player->handleEvent(ev);
 }
 
 /**
@@ -152,4 +154,8 @@ Camera& PlayingState::getCamera() {
  */
 const Level& PlayingState::getCurrentLevel() const {
 	return m_level;
+}
+ScoreKeeper& PlayingState::getScoreKeeper()
+{
+	return m_scoreKeeper;
 }

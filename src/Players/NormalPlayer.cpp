@@ -27,6 +27,10 @@ void NormalPlayer::initVariables()
     this->setCenter(CONSTANTS::SPAWNPOINT_X, CONSTANTS::SPAWNPOINT_Y);
     this->onSurface = false;
     this->setRotation(0.f);
+    this->lastX = this->getTopLeftPosition().x;
+    this->lastY = this->getTopLeftPosition().y;
+    this->lastRotation = this->getRotation();
+    this->lastScore = 0.f;
 }
 
 /**
@@ -37,6 +41,7 @@ void NormalPlayer::initPhysics()
 {
     this->velocity.x = CONSTANTS::PLAYER_SPEED_X;
     this->velocity.y = CONSTANTS::PLAYER_SPEED_Y;
+    this->lastVelocity = this->velocity;
 }
 
 //Functions
