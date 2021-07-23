@@ -14,7 +14,9 @@
  * @param context Reference to the PlayingState object that player belongs to so that it can access its contents
  */
 Player::Player(PlayingState& context):
-	m_ref_PlayingState(context)
+    m_ref_PlayingState(context),
+    gravity_state(GRAVITY_STATE::NORMAL),
+    score(0.f)
 {
 }
 Player::~Player(){}
@@ -140,6 +142,12 @@ void Player::resetVelocityY()
     this->velocity.y = 0;
 }
 
+void Player::flipGravity()
+{
+    this->gravity_state = 
+        (gravity_state == GRAVITY_STATE::NORMAL) ? GRAVITY_STATE::FLIPPED : GRAVITY_STATE::NORMAL;
+}
+
 //Movement
 /**
  * @brief Moves the sprite by given amount
@@ -202,7 +210,9 @@ void Player::resolveCollision(const Bound& bound)
         case BOUNDNAME::SPIKE:
             resolveSpikeCollision(bound);
             break;
-        case BOUNDNAME::PORTAL:
+        case BOUNDNAME::PORTAL_N:
+        case BOUNDNAME::PORTAL_P:
+        case BOUNDNAME::PORTAL_R:
             resolvePortalCollision(static_cast<const BoxBound&>(bound));
             break;
     }    
@@ -248,7 +258,21 @@ void Player::resolvePortalCollision(const BoxBound& bound)
     // Snap to the end of the portal, And change gameMode
     this->setTopLeftPosition(bound.getRight(), this->getTopLeftPosition().y);
    // this->m_ref_PlayingState.switchGameMode(); // Portal sucks the Player in irrespective of how it touches it.
-    this->m_ref_PlayingState.setNextFrameAction(NEXTFRAMEACTION::SWITCH);
+    switch(bound.getBoundName())
+    {
+        case BOUNDNAME::PORTAL_N:
+            this->m_ref_PlayingState.setNextFrameAction(NEXTFRAMEACTION::NORMAL);
+            break;
+        case BOUNDNAME::PORTAL_P:
+            this->m_ref_PlayingState.setNextFrameAction(NEXTFRAMEACTION::PLANE);
+            break;
+        case BOUNDNAME::PORTAL_R:
+            this->m_ref_PlayingState.setNextFrameAction(NEXTFRAMEACTION::REVERSE);
+            break;
+        default:
+            break;
+    }
+
 }
 void Player::die()
 {
@@ -315,6 +339,9 @@ void Player::handleEvent(sf::Event ev)
                     break;
                 case sf::Keyboard::Up:
                     upArrowHeld = false;
+                    break;
+                case sf::Keyboard::F:
+                    this->flipGravity();
                     break;        
                 default:
                     break;
