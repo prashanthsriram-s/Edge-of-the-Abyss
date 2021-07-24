@@ -4,7 +4,7 @@
 #include<cmath>
 #define PI 3.141592
 
-PlanePlayer::PlanePlayer(PlayingState& context):
+PlanePlayer::PlanePlayer(PlayingState* context):
     Player(context)
 {
     this->sprite.setTexture("player/spaceship") ;
@@ -20,7 +20,7 @@ void PlanePlayer::initVariables()
     this->playerBounds.setWidth(CONSTANTS::PLANE_WIDTH);
     this->playerBounds.setHeight(CONSTANTS::PLANE_HEIGHT);
     this->sprite.setOrigin(CONSTANTS::PLANE_WIDTH/2, CONSTANTS::TILE_HEIGHT - 19.f/2.f);
-    this->setCenter(CONSTANTS::PLANE_SPAWN_POINT_X, CONSTANTS::PLANE_SPAWN_POINT_Y);
+    this->setCenter(CONSTANTS::SPAWNPOINT_X, CONSTANTS::SPAWNPOINT_Y);
     this->sprite.setScale(1.f,1.f*this->gravity_state);
 
     this->lastX = this->getTopLeftPosition().x;
