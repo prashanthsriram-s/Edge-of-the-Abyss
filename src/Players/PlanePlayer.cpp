@@ -37,8 +37,8 @@ void PlanePlayer::flipGravity()
 
 void PlanePlayer::initPhysics()
 {
-    this->velocity.x = CONSTANTS::PLANE_SPEED_X;
-    this->velocity.y = CONSTANTS::PLANE_SPEED_Y;
+    this->velocity.x = CONSTANTS::PLAYER_SPEED_X;
+    this->velocity.y = CONSTANTS::PLAYER_SPEED_Y;
     this->lastVelocity = this->velocity;
     this->lastRotation = this->getRotation();
 }
