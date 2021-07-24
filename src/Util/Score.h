@@ -26,6 +26,7 @@ public:
     const float getCurrentScore() const;
     const float getHighScore() const;
 
+    void setCurrentScore(float); // to set last save's score
     //Logic
     int convertSecondsToScore(float seconds);
     void updateHighScore();

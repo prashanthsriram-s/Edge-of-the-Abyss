@@ -42,6 +42,7 @@ ScoreKeeper::~ScoreKeeper(){if(fio.is_open())fio.close();}
 const float ScoreKeeper::getCurrentScore() const{return currentScore;}
 const float ScoreKeeper::getHighScore() const{return highScore;}
 
+void ScoreKeeper::setCurrentScore(float score){currentScore = score;}
 /**
 * @brief Converts seconds of survival to points by floor(100*Seconds)
 * 
